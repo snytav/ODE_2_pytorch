@@ -7,10 +7,10 @@ import shutil
 class ODEnet(nn.Module):
     def __init__(self,N):
         super(ODEnet,self).__init__()
-        self.ode_numpy_path = '/c/Users/snyta/PycharmProjects/ode_numpy'
+        self.ode_numpy_path = 'c:\\Users\\snyta\\PycharmProjects\\ode_numpy'
         self.follow_numpy = True
         if self.follow_numpy:
-            shutil.copy(self.ode_numpy_path+'/W00.txt','.')
+            shutil.copy(self.ode_numpy_path+'\W00.txt','W00.txt')
             W00 = np.loadtxt('W00.txt')
             W00 = torch.from_numpy(W00).to(torch.float)
             self.N = W00.shape[0]
