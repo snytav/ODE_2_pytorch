@@ -29,7 +29,7 @@ class ODEnet(nn.Module):
            fc1.bias = torch.nn.Parameter(torch.zeros_like(fc1.bias))
 
         self.fc1 = fc1
-        x = torch.zeros(1)
+        x = torch.ones(1)
         # x = x.to(torch.double)
         y = self.fc1(x)
         act_fc1 = torch.sigmoid
