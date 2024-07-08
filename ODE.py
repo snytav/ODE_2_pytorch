@@ -18,14 +18,16 @@ class ODEnet(nn.Module):
             self.N = N
 
         fc1 = nn.Linear(1,self.N)
-        y_test = fc1(torch.zeros(1))
-        W00 = W00.reshape(10,1)
-        # W00 = torch.from_numpy(W00)
-        # fc1.weight = torch.nn.Parameter(W00)
+        if self.follow_numpy:
+           W00 = W00.reshape(10,1)
+          # W00 = torch.from_numpy(W00)
+           fc1.weight = torch.nn.Parameter(W00)
+           fc1.bias = torch.nn.Parameter(torch.zeros(self.N))
 
-        y_test = fc1(torch.zeros(1))
-        y_test = fc1(torch.zeros(1))
-        # fc1.bias = torch.nn.Parameter(torch.zeros_like(fc1.bias))
+        y_test = fc1(torch.ones(1))
+        if self.follow_numpy:
+           fc1.bias = torch.nn.Parameter(torch.zeros_like(fc1.bias))
+
         self.fc1 = fc1
         x = torch.zeros(1)
         # x = x.to(torch.double)
