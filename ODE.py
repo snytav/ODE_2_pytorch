@@ -36,14 +36,17 @@ class ODEnet(nn.Module):
         y = act_fc1(y)
         self.act_fc1 = act_fc1
 
-        W01 = np.loadtxt('W01.txt')
-        W01 = torch.from_numpy(W01).to(torch.float)
+
+        #W01 = torch.from_numpy(W01).to(torch.float)
 
         fc2 = nn.Linear(self.N, 1)
-
-        # fc2.weight = torch.nn.Parameter(W01.reshape(1, self.N).float())
-        # fc2.bias = torch.nn.Parameter(torch.zeros((1)))
-        act_fc2 = torch.sigmoid #2_torch = fc2(act_fc1.reshape(1, self.N))
+        if self.follow_numpy:
+            shutil.copy(self.ode_numpy_path + '\W01.txt', 'W01.txt')
+            W01 = torch.from_numpy(np.loadtxt('W01.txt'))
+            fc2.weight = torch.nn.Parameter(W01.reshape(1, self.N).float())
+            fc2.bias = torch.nn.Parameter(torch.zeros((1)))
+        act_fc2 = torch.sigmoid
+        test2_torch = fc2(act_fc1.reshape(1, self.N))
         y= fc2(y)
         self.fc2 = fc2
         # self.fc1 = fc1
