@@ -46,7 +46,7 @@ class ODEnet(nn.Module):
             fc2.weight = torch.nn.Parameter(W01.reshape(1, self.N).float())
             fc2.bias = torch.nn.Parameter(torch.zeros((1)))
         act_fc2 = torch.sigmoid
-        test2_torch = fc2(act_fc1.reshape(1, self.N))
+       # test2_torch = fc2(act_fc1.reshape(1, self.N))
         y= fc2(y)
         self.fc2 = fc2
         # self.fc1 = fc1
@@ -71,4 +71,5 @@ class ODEnet(nn.Module):
 
 if __name__ == '__main__':
     ode = ODEnet(10)
+    y = ode(torch.ones(1))
     qq  = 0
