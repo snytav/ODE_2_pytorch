@@ -1,6 +1,8 @@
 import torch
 import torch.nn as nn
 import numpy as np
+from sympy import *
+from sympy.parsing.sympy_parser import parse_expr
 
 import shutil
 
@@ -61,6 +63,23 @@ class ODEnet(nn.Module):
         # x = self.act_fc2(x)
         return x
 
+    def rightHandSide(self):
+        return 0.0
+
+    def getExpressionFromLinear(self,f):
+        y_str = ""
+        for j,w in enumerate(f.weight):
+            x_str = "x_" + str(j)
+            w_str = "w_" + str(j)
+            x_j = Symbol(x_str)
+            w_j = Symbol(w_str)
+            y_str += w_str + '*' +x_str
+            if j < f.weight.shape[0] - 1:
+                y_str += '+'
+
+        ex = parse_expr(y_str)
+        return ex  # x**2
+
     def boundary(self,x):
         return 1.0
 
@@ -71,5 +90,15 @@ class ODEnet(nn.Module):
 
 if __name__ == '__main__':
     ode = ODEnet(10)
-    y = ode(torch.ones(1))
+    #ex = ode.getExpressionFromLinear(ode.fc1)
+    x = torch.ones(1)
+    x.requires_grad = True
+    y = ode(x)
+    y.backward()
+    dx = x.grad
+
+    from loss import loss_function
+    x_space = torch.linspace(0,1.0,ode.N)
+    lf = loss_function(ode,x_space)
+
     qq  = 0
