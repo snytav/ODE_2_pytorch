@@ -12,7 +12,7 @@ def loss_function(pde, x):
         net_out = pde.forward(xi)
         psy_t = 1. + xi * net_out
         net_out.backward()
-        d_net_out = xi.grad
+        d_net_out = xi.grad     #needs checking !!!!!!!!!!!!!!!!!!!!!!!
         d_psy_t = net_out + xi * d_net_out
         func = f(xi, psy_t)
         err_sqr = (d_psy_t - func) ** 2
