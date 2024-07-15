@@ -9,7 +9,8 @@ import shutil
 class ODEnet(nn.Module):
     def __init__(self,N):
         super(ODEnet,self).__init__()
-        self.ode_numpy_path = 'c:\\Users\\snyta\\PycharmProjects\\ode_numpy'
+        #self.ode_numpy_path = 'c:\\Users\\snyta\\PycharmProjects\\ode_numpy'
+        self.ode_numpy_path = 'c:\\Users\\Snytnikov.A\\PycharmProjects\\ode_numpy\ode_numpy'
         self.follow_numpy = True
         if self.follow_numpy:
             shutil.copy(self.ode_numpy_path+'\W00.txt','W00.txt')
@@ -63,8 +64,9 @@ class ODEnet(nn.Module):
         # x = self.act_fc2(x)
         return x
 
-    def rightHandSide(self):
-        return 0.0
+    def rightHandSide(self,x,psy):
+        from auxiliary_functions import f
+        return f(x,psy)
 
     def getExpressionFromLinear(self,f):
         y_str = ""
