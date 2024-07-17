@@ -44,7 +44,7 @@ class ODEnet(nn.Module):
 
         fc2 = nn.Linear(self.N, 1)
         if self.follow_numpy:
-            shutil.copy(self.ode_numpy_path + '\W01.txt', 'W01.txt')
+            shutil.copy(self.ode_numpy_path + r'\W01.txt', 'W01.txt')
             W01 = torch.from_numpy(np.loadtxt('W01.txt'))
             fc2.weight = torch.nn.Parameter(W01.reshape(1, self.N).float())
             fc2.bias = torch.nn.Parameter(torch.zeros((1)))
@@ -92,12 +92,32 @@ class ODEnet(nn.Module):
 
 if __name__ == '__main__':
     ode = ODEnet(10)
+    x_space = torch.linspace(0, 1.0, ode.N)
     #ex = ode.getExpressionFromLinear(ode.fc1)
     x = torch.ones(1)
     x.requires_grad = True
     y = ode(x)
     y.backward()
     dx = x.grad
+    print('function at x=1 ',y)
+    print('derivative at x=1 ', dx)
+
+    x = x_space[1]
+    y = ode(x)
+    y.backward()
+    dx = x.grad
+    print('function at x_space[1] ',y)
+    print('derivative at x_space[1] ', dx)
+
+    x = x_space[2]
+    y = ode(x)
+    y.backward()
+    dx = x.grad
+
+    print('function at x_space[2] ',y)
+    print('derivative at x_space[2] ', dx)
+
+
 
     from loss import loss_function
     x_space = torch.linspace(0,1.0,ode.N)
